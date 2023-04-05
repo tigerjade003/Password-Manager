@@ -1,41 +1,81 @@
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+import time
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
-        MainWindow.resize(813, 737)
+        MainWindow.setFixedSize(1500, 200)
+        MainWindow.setAutoFillBackground(False)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.Button1 = QtWidgets.QPushButton(self.centralwidget)
-        self.Button1.setGeometry(QtCore.QRect(210, 310, 491, 131))
+        self.Button1.setGeometry(QtCore.QRect(180, 100, 167, 23))
         self.Button1.setObjectName("Button1")
         self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(430, 140, 351, 51))
+        self.label.setGeometry(QtCore.QRect(30, 20, 550, 75))
+        font = QtGui.QFont()
+        font.setPointSize(26)
+        self.label.setFont(font)
+        self.label.setWordWrap(False)
         self.label.setObjectName("label")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 813, 22))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 377, 22))
         self.menubar.setObjectName("menubar")
         self.menuPassword_Creator = QtWidgets.QMenu(self.menubar)
         self.menuPassword_Creator.setObjectName("menuPassword_Creator")
+        self.menuAdd_A_Password = QtWidgets.QMenu(self.menubar)
+        self.menuAdd_A_Password.setObjectName("menuAdd_A_Password")
         MainWindow.setMenuBar(self.menubar)
+        self.Password = QtWidgets.QAction(MainWindow)
+        self.Password.setObjectName("Password")
+        self.actionCreate_A_Password = QtWidgets.QAction(MainWindow)
+        self.actionCreate_A_Password.setObjectName("actionCreate_a_Password")
+        self.actionFAQ_s = QtWidgets.QAction(MainWindow)
+        self.actionFAQ_s.setObjectName("actionFAQ_s")
+        self.actionfurther_help = QtWidgets.QAction(MainWindow)
+        self.actionfurther_help.setObjectName("actionfurther_help")
+        self.menuPassword_Creator.addAction(self.actionCreate_A_Password)
+        self.menuAdd_A_Password.addAction(self.actionFAQ_s)
+        self.menuAdd_A_Password.addAction(self.actionfurther_help)
         self.menubar.addAction(self.menuPassword_Creator.menuAction())
-
+        self.menubar.addAction(self.menuAdd_A_Password.menuAction())
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.actionCreate_A_Password.triggered.connect(lambda: self.clicked("You clicked Create A Pasword"))
+        self.actionFAQ_s.triggered.connect(lambda: self.clicked("You clicked Frequently Asked Questions"))
+        self.actionfurther_help.triggered.connect(lambda: self.clicked("You clicked to ask for more help"))
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.Button1.setText(_translate("MainWindow", "Click This to Get a Million Dollars"))
-        self.label.setText(_translate("MainWindow", "Hello My Name Is Jaden"))
-        self.menuPassword_Creator.setTitle(_translate("MainWindow", "Password Creator"))
+        self.Button1.setStatusTip(_translate("MainWindow", "Start Using the Password Manager"))
+        self.Button1.setText(_translate("MainWindow", "Get Started"))
+        self.label.setText(_translate("MainWindow", "Password Manager"))
+        self.menuPassword_Creator.setTitle(_translate("MainWindow", "Password"))
+        self.menuAdd_A_Password.setStatusTip(_translate("MainWindow", "Help"))
+        self.menuAdd_A_Password.setTitle(_translate("MainWindow", "Help"))
+        self.Password.setText(_translate("MainWindow", "Create A Password"))
+        self.Password.setStatusTip(_translate("MainWindow", "Create A New Password to Store"))
+        self.Password.setShortcut(_translate("MainWindow", "Ctrl+N"))
+        self.actionCreate_A_Password.setText(_translate("MainWindow", "Create A Password"))
+        self.actionCreate_A_Password.setStatusTip(_translate("MainWindow", "Create A New  Password"))
+        self.actionCreate_A_Password.setShortcut(_translate("MainWindow", "Ctrl+N"))
+        self.actionFAQ_s.setText(_translate("MainWindow", "FAQ\'s"))
+        self.actionFAQ_s.setStatusTip(_translate("MainWindow", "Frequently asked questions"))
+        self.actionfurther_help.setText(_translate("MainWindow", "Help"))
+        self.actionfurther_help.setStatusTip(_translate("MainWindow", "Find help"))
+        self.actionfurther_help.setShortcut(_translate("MainWindow", "Ctrl+H"))
+
+
+    def clicked(self, text):
+        self.label.setText(text)
+        self.label.adjustSize()
+
 
 
 if __name__ == "__main__":
