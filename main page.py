@@ -95,9 +95,18 @@ class Ui_MainWindow(object):
         fName = QFileDialog.getOpenFileName()
         s = fName[0]
         if(s.endswith(".txt")):
-            self.label1.setText("Loading Password Manager ...")
-            self.label1.adjustSize()
-            QtTest.QTest.qWait(3000)
+            i = 0
+            while(i < 5):
+                self.label1.setText("Loading Password Manager.")
+                self.label1.adjustSize()
+                QtTest.QTest.qWait(200)
+                self.label1.setText("Loading Password Manager..")
+                self.label1.adjustSize()
+                QtTest.QTest.qWait(200)
+                self.label1.setText("Loading Password Manager...")
+                self.label1.adjustSize()
+                QtTest.QTest.qWait(200)
+                i += 1
             self.label1.setText("Loaded Password Manager. ")
             self.label1.adjustSize()
 
@@ -108,12 +117,6 @@ class Ui_MainWindow(object):
 
 if __name__ == "__main__":
     import sys
-    root = tk.Tk()
-    #root.withdraw
-    sc_wi = root.winfo_screenwidth()
-    sc_he = root.winfo_screenheight()
-    print(sc_wi)
-    print(sc_he)
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
