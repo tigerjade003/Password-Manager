@@ -2,7 +2,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtTest
 from PyQt5.QtWidgets import QFileDialog, QMainWindow, QWidget, QSizePolicy
 from PyQt5.QtCore import Qt
 import tkinter as tk
-import os
+import sys
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -11,12 +12,17 @@ class Ui_MainWindow(object):
         sc_he = root.winfo_screenheight()
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
-        #MainWindow.setFixedSize(sc_wi, sc_he)
         MainWindow.setAutoFillBackground(False)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.Button1 = QtWidgets.QPushButton(self.centralwidget)
-        self.Button1.setGeometry(QtCore.QRect(1515, 100, 170, 23))
+        self.Button1.setGeometry(QtCore.QRect(1500, 100, 170, 23))
+        self.Button2 = QtWidgets.QPushButton(self.centralwidget)
+        self.Button2.setGeometry(QtCore.QRect(1200, 100, 170, 23))
+        self.Button3 = QtWidgets.QPushButton(self.centralwidget)
+        self.Button3.setGeometry(QtCore.QRect(1800, 100, 170, 23))
+        self.Button2.hide()
+        self.Button3.hide()
         self.label1 = QtWidgets.QLabel(self.centralwidget)
         self.label1.setGeometry(QtCore.QRect(100, 200, 100, 100))
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -65,13 +71,17 @@ class Ui_MainWindow(object):
         self.actionCreate_A_Password.triggered.connect(lambda: self.clicked("You clicked Create A Pasword"))
         self.actionFAQ_s.triggered.connect(lambda: self.clicked("You clicked Frequently Asked Questions"))
         self.actionfurther_help.triggered.connect(lambda: self.clicked("You clicked to ask for more help"))
-        # To make the button work when enter is pressed, we have to create an Action with the shortcut of Enter, and it has to do the same thing.
         self.Button1.clicked.connect(self.clicker)
+
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.Button1.setStatusTip(_translate("MainWindow", "Start Using the Password Manager"))
         self.Button1.setText(_translate("MainWindow", "Get Started"))
+        self.Button2.setStatusTip(_translate("MainWindow", "NO"))
+        self.Button2.setText(_translate("MainWindow", "NO"))
+        self.Button3.setStatusTip(_translate("MainWindow", "YES"))
+        self.Button3.setText(_translate("MainWindow", "YES"))
         self.label1.setText(_translate("MainWindow", " "))
         self.label.setText(_translate("MainWindow", "Password Manager"))
         self.menuPassword_Creator.setTitle(_translate("MainWindow", "Password"))
@@ -88,15 +98,30 @@ class Ui_MainWindow(object):
         self.actionfurther_help.setText(_translate("MainWindow", "Help"))
         self.actionfurther_help.setStatusTip(_translate("MainWindow", "Find help"))
         self.actionfurther_help.setShortcut(_translate("MainWindow", "Ctrl+H"))
+
     def clicked(self, text):
         self.label.setText(text)
         self.label.adjustSize()
+
     def clicker(self):
+        _translate = QtCore.QCoreApplication.translate
+        self.Button1.hide()
+        self.label.setText("Do you have a password file stored on this computer?")
+        self.label.setGeometry(1000, 20, 550, 75)
+        self.label.adjustSize()
+        self.Button2.show()
+        self.Button3.show()
+        self.Button3.clicked.connect(self.yes)
+
+    def yes(self):
+        self.label1.setText("Please Select the file storing the passwords")
+        self.label1.adjustSize()
+        QtTest.QTest.qWait(200)
         fName = QFileDialog.getOpenFileName()
         s = fName[0]
-        if(s.endswith(".txt")):
+        if s.endswith(".txt"):
             i = 0
-            while(i < 5):
+            while i < 5:
                 self.label1.setText("Loading Password Manager.")
                 self.label1.adjustSize()
                 QtTest.QTest.qWait(200)
@@ -116,7 +141,6 @@ class Ui_MainWindow(object):
 
 
 if __name__ == "__main__":
-    import sys
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
