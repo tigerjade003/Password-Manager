@@ -3,15 +3,8 @@ from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QFileDialog, QWidget, QSizePolicy, QTableWidget, QInputDialog
 from PyQt5.QtCore import Qt
 import sys
-# work on the table showing the results. TODO
-# work on what happens when the new password button is pressed. Done.
-# add a button on the screen allowing the user to create a new password by clicking the button directly. Done
-# add a delete password button TODO
-# work on what happens when help and FAQ's are pressed TODO
-# work on what happens when the correct file is opened TODO
-# work on what happens after each button is pressed. TODO
-# After results are showing, add a search function for the results based on the site and the username. TODO
-# start working on password security TODO
+
+
 class Ui_MainWindow(QWidget):
     s = ""
 
