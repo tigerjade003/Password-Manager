@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, QtTest
-from PyQt5.QtWidgets import QFileDialog, QMainWindow, QWidget, QSizePolicy, QLineEdit, QInputDialog
-from PyQt5.QtCore import Qt, QDir
+from PyQt5.QtWidgets import QFileDialog, QMainWindow, QWidget, QSizePolicy, QInputDialog
+from PyQt5.QtCore import Qt
 import tkinter as tk
 import sys
 
@@ -121,20 +121,7 @@ class Ui_MainWindow(QWidget):
         fName = QFileDialog.getOpenFileName(self, "Open Text File", "", "All Files(*) ;; Text Files(*.txt)")
         s = fName[0]
         if s.endswith(".txt"):
-            i = 0
-            while i < 5:
-                self.label1.setText("Loading Password Manager.")
-                self.label1.adjustSize()
-                QtTest.QTest.qWait(200)
-                self.label1.setText("Loading Password Manager..")
-                self.label1.adjustSize()
-                QtTest.QTest.qWait(200)
-                self.label1.setText("Loading Password Manager...")
-                self.label1.adjustSize()
-                QtTest.QTest.qWait(200)
-                i += 1
-            self.label1.setText("Loaded Password Manager. ")
-            self.label1.adjustSize()
+            #do the password/loading stuff
         else:
             self.label1.setText("Error. Please Select a .txt File.")
             self.label1.adjustSize()
@@ -144,8 +131,9 @@ class Ui_MainWindow(QWidget):
         self.label1.adjustSize()
         QtTest.QTest.qWait(200)
         name = QtWidgets.QInputDialog.getText(self, 'Input Text File Name', 'Enter your Text File Name:')[0]
-
-
+        name = name + '.txt'
+        with open(name, 'x') as f:
+            f.write("")
 
 
 if __name__ == "__main__":
