@@ -69,9 +69,9 @@ class Ui_MainWindow(QWidget):
         self.menubar.addAction(self.menuHelp.menuAction())
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        self.actionCreate_A_Password.triggered.connect(lambda: self.clicked("You clicked Create A Pasword"))
-        self.actionFAQ_s.triggered.connect(lambda: self.clicked("You clicked Frequently Asked Questions"))
-        self.actionfurther_help.triggered.connect(lambda: self.clicked("You clicked to ask for more help"))
+        self.actionCreate_A_Password.triggered.connect() # do nothing for now, as function is not coded yet.
+        self.actionFAQ_s.triggered.connect()  # do nothing for now, as function is not coded yet.
+        self.actionfurther_help.triggered.connect()  # do nothing for now, as function is not coded yet.
         self.Button1.clicked.connect(self.clicker)
 
     def retranslateUi(self, MainWindow):
@@ -99,10 +99,6 @@ class Ui_MainWindow(QWidget):
         self.actionfurther_help.setText(_translate("MainWindow", "Help"))
         self.actionfurther_help.setStatusTip(_translate("MainWindow", "Find help"))
         self.actionfurther_help.setShortcut(_translate("MainWindow", "Ctrl+H"))
-
-    def clicked(self, text):
-        self.label.setText(text)
-        self.label.adjustSize()
 
     def clicker(self):
         _translate = QtCore.QCoreApplication.translate
