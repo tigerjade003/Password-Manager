@@ -55,6 +55,7 @@ class Ui_MainWindow(QWidget):
         MainWindow.setMenuBar(self.menubar)
         self.Password = QtWidgets.QAction(MainWindow)
         self.Password.setObjectName("Password")
+        self.menubar.hide()
         self.actionCreate_A_Password = QtWidgets.QAction(MainWindow)
         self.actionCreate_A_Password.setObjectName("actionCreate_a_Password")
         self.actionFAQ_s = QtWidgets.QAction(MainWindow)
@@ -106,6 +107,7 @@ class Ui_MainWindow(QWidget):
     def clicker(self):
         _translate = QtCore.QCoreApplication.translate
         self.Button1.hide()
+        self.menubar.show()
         self.label.setText("Do you have a password file stored on this computer?")
         self.label.setGeometry(1000, 20, 550, 75)
         self.label.adjustSize()
@@ -118,10 +120,11 @@ class Ui_MainWindow(QWidget):
         self.label1.setText("Please Select the file storing the passwords")
         self.label1.adjustSize()
         QtTest.QTest.qWait(200)
-        fName = QFileDialog.getOpenFileName(self, "Open Text File", "", "All Files(*) ;; Text Files(*.txt)")
+        fName = QFileDialog.getOpenFileName(self, "Open Text File", "", "Text Files(*.txt)")
         s = fName[0]
         if s.endswith(".txt"):
-            #do the password/loading stuff
+            #placeholder for the next part, displaying all the passwords
+            print('"""')
         else:
             self.label1.setText("Error. Please Select a .txt File.")
             self.label1.adjustSize()
