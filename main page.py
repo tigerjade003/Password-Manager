@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, QtTest
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import QFileDialog, QMainWindow, QWidget, QSizePolicy, QInputDialog
 from PyQt5.QtCore import Qt
 import tkinter as tk
@@ -16,13 +17,16 @@ class Ui_MainWindow(QWidget):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.Button1 = QtWidgets.QPushButton(self.centralwidget)
-        self.Button1.setGeometry(QtCore.QRect(1500, 100, 170, 23))
+        self.Button1.setGeometry(QtCore.QRect(1400, 100, 400, 50))
         self.Button2 = QtWidgets.QPushButton(self.centralwidget)
-        self.Button2.setGeometry(QtCore.QRect(1200, 100, 170, 23))
+        self.Button2.setGeometry(QtCore.QRect(1200, 100, 400, 50))
         self.Button3 = QtWidgets.QPushButton(self.centralwidget)
-        self.Button3.setGeometry(QtCore.QRect(1800, 100, 170, 23))
+        self.Button3.setGeometry(QtCore.QRect(1800, 100, 400, 50))
         self.Button2.hide()
         self.Button3.hide()
+        self.Button1.setFont(QFont('Times', 15))
+        self.Button2.setFont(QFont('Times', 15))
+        self.Button3.setFont(QFont('Times', 15))
         self.label1 = QtWidgets.QLabel(self.centralwidget)
         self.label1.setGeometry(QtCore.QRect(100, 200, 100, 100))
         self.label = QtWidgets.QLabel(self.centralwidget)
@@ -69,9 +73,9 @@ class Ui_MainWindow(QWidget):
         self.menubar.addAction(self.menuHelp.menuAction())
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        self.actionCreate_A_Password.triggered.connect() # do nothing for now, as function is not coded yet.
-        self.actionFAQ_s.triggered.connect()  # do nothing for now, as function is not coded yet.
-        self.actionfurther_help.triggered.connect()  # do nothing for now, as function is not coded yet.
+        self.actionCreate_A_Password.triggered.connect(lambda: self.clicked("You clicked Create A Pasword"))
+        self.actionFAQ_s.triggered.connect(lambda: self.clicked("You clicked Frequently Asked Questions"))
+        self.actionfurther_help.triggered.connect(lambda: self.clicked("You clicked to ask for more help"))
         self.Button1.clicked.connect(self.clicker)
 
     def retranslateUi(self, MainWindow):
@@ -100,6 +104,10 @@ class Ui_MainWindow(QWidget):
         self.actionfurther_help.setStatusTip(_translate("MainWindow", "Find help"))
         self.actionfurther_help.setShortcut(_translate("MainWindow", "Ctrl+H"))
 
+    def clicked(self, text):
+        self.label.setText(text)
+        self.label.adjustSize()
+
     def clicker(self):
         _translate = QtCore.QCoreApplication.translate
         self.Button1.hide()
@@ -119,7 +127,6 @@ class Ui_MainWindow(QWidget):
         fName = QFileDialog.getOpenFileName(self, "Open Text File", "", "Text Files(*.txt)")
         s = fName[0]
         if s.endswith(".txt"):
-            #placeholder for the next part, displaying all the passwords
             print('"""')
         else:
             self.label1.setText("Error. Please Select a .txt File.")
@@ -129,10 +136,11 @@ class Ui_MainWindow(QWidget):
         self.label1.setText("Create A Text File Storing the Passwords")
         self.label1.adjustSize()
         QtTest.QTest.qWait(200)
-        name = QtWidgets.QInputDialog.getText(self, 'Input Text File Name', 'Enter your Text File Name:')[0]
-        name = name + '.txt'
-        with open(name, 'x') as f:
-            f.write("")
+        fName, _ = QFileDialog.getSaveFileName(self, "Save File", "", "Text Files (*.txt)")
+        if fName:
+            with open(fName, "w") as f:
+                f.write("")
+        print(fName)
 
 
 if __name__ == "__main__":
