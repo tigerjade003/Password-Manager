@@ -1,12 +1,23 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, QtTest
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QFileDialog, QMainWindow, QWidget, QSizePolicy, QInputDialog
+from PyQt5.QtWidgets import QFileDialog, QWidget, QSizePolicy, QTableWidget, QInputDialog
 from PyQt5.QtCore import Qt
 import tkinter as tk
 import sys
 
 
+# work on the table showing the results. TODO
+# work on what happens when the new password button is pressed. Done.
+# add a button on the screen allowing the user to create a new password by clicking the button directly. Done
+# add a delete password button TODO
+# work on what happens when help and FAQ's are pressed TODO
+# work on what happens when the correct file is opened TODO
+# work on what happens after each button is pressed. TODO
+# After results are showing, add a search function for the results based on the site and the username. TODO
+# start working on password security TODO
 class Ui_MainWindow(QWidget):
+    s = ""
+
     def setupUi(self, MainWindow):
         root = tk.Tk()
         sc_wi = root.winfo_screenwidth()
@@ -16,16 +27,31 @@ class Ui_MainWindow(QWidget):
         MainWindow.setAutoFillBackground(False)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+        self.PasswordTable = QTableWidget(self.centralwidget)
+        self.PasswordTable.setObjectName(u"tableWidget")
+        self.PasswordTable.setGeometry(QtCore.QRect(100, 125, 3050, 1450))
+        self.PasswordTable.setColumnCount(3)
+        item = QtWidgets.QTableWidgetItem()
+        self.PasswordTable.setHorizontalHeaderItem(0, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.PasswordTable.setHorizontalHeaderItem(1, item)
+        item = QtWidgets.QTableWidgetItem()
+        self.PasswordTable.setHorizontalHeaderItem(2, item)
+        self.PasswordTable.hide()
         self.Button1 = QtWidgets.QPushButton(self.centralwidget)
         self.Button1.setGeometry(QtCore.QRect(1400, 100, 400, 50))
         self.Button2 = QtWidgets.QPushButton(self.centralwidget)
         self.Button2.setGeometry(QtCore.QRect(1200, 100, 400, 50))
         self.Button3 = QtWidgets.QPushButton(self.centralwidget)
         self.Button3.setGeometry(QtCore.QRect(1800, 100, 400, 50))
+        self.Button4 = QtWidgets.QPushButton(self.centralwidget)
+        self.Button4.setGeometry(2800, 50, 300, 50)
+        self.Button4.hide()
         self.Button2.hide()
         self.Button3.hide()
         self.Button1.setFont(QFont('Times', 15))
         self.Button2.setFont(QFont('Times', 15))
+        self.Button3.setFont(QFont('Times', 15))
         self.Button3.setFont(QFont('Times', 15))
         self.label1 = QtWidgets.QLabel(self.centralwidget)
         self.label1.setGeometry(QtCore.QRect(100, 200, 100, 100))
@@ -73,7 +99,6 @@ class Ui_MainWindow(QWidget):
         self.menubar.addAction(self.menuHelp.menuAction())
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        self.actionCreate_A_Password.triggered.connect(lambda: self.clicked("You clicked Create A Pasword"))
         self.actionFAQ_s.triggered.connect(lambda: self.clicked("You clicked Frequently Asked Questions"))
         self.actionfurther_help.triggered.connect(lambda: self.clicked("You clicked to ask for more help"))
         self.Button1.clicked.connect(self.clicker)
@@ -82,11 +107,18 @@ class Ui_MainWindow(QWidget):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.Button1.setStatusTip(_translate("MainWindow", "Start Using the Password Manager"))
+        item = self.PasswordTable.horizontalHeaderItem(0)
+        item.setText(_translate("MainWindow", "Website"))
+        item = self.PasswordTable.horizontalHeaderItem(1)
+        item.setText(_translate("MainWindow", "Username"))
+        item = self.PasswordTable.horizontalHeaderItem(2)
+        item.setText(_translate("MainWindow", "Password"))
         self.Button1.setText(_translate("MainWindow", "Get Started"))
         self.Button2.setStatusTip(_translate("MainWindow", "NO"))
         self.Button2.setText(_translate("MainWindow", "NO"))
         self.Button3.setStatusTip(_translate("MainWindow", "YES"))
         self.Button3.setText(_translate("MainWindow", "YES"))
+        self.Button4.setText(_translate("MainWindow", "Add A Password"))
         self.label1.setText(_translate("MainWindow", " "))
         self.label.setText(_translate("MainWindow", "Password Manager"))
         self.menuPassword_Creator.setTitle(_translate("MainWindow", "Password"))
@@ -95,8 +127,8 @@ class Ui_MainWindow(QWidget):
         self.Password.setText(_translate("MainWindow", "Create A Password"))
         self.Password.setStatusTip(_translate("MainWindow", "Create A New Password to Store"))
         self.Password.setShortcut(_translate("MainWindow", "Ctrl+N"))
-        self.actionCreate_A_Password.setText(_translate("MainWindow", "Create A Password"))
-        self.actionCreate_A_Password.setStatusTip(_translate("MainWindow", "Create A New  Password"))
+        self.actionCreate_A_Password.setText(_translate("MainWindow", "Add A Password"))
+        self.actionCreate_A_Password.setStatusTip(_translate("MainWindow", "Add A Password"))
         self.actionCreate_A_Password.setShortcut(_translate("MainWindow", "Ctrl+N"))
         self.actionFAQ_s.setText(_translate("MainWindow", "FAQ\'s"))
         self.actionFAQ_s.setStatusTip(_translate("MainWindow", "Frequently asked questions"))
@@ -104,6 +136,7 @@ class Ui_MainWindow(QWidget):
         self.actionfurther_help.setStatusTip(_translate("MainWindow", "Find help"))
         self.actionfurther_help.setShortcut(_translate("MainWindow", "Ctrl+H"))
 
+    # going to be deleted in the future
     def clicked(self, text):
         self.label.setText(text)
         self.label.adjustSize()
@@ -125,11 +158,29 @@ class Ui_MainWindow(QWidget):
         self.label1.adjustSize()
         QtTest.QTest.qWait(200)
         fName = QFileDialog.getOpenFileName(self, "Open Text File", "", "Text Files(*.txt)")
-        s = fName[0]
-        if s.endswith(".txt"):
-            print('"""')
+        qr = fName[0]
+        self.s = qr
+        f = ""
+        try:
+            q = open(qr, "r")
+            f = q.readline()
+        except FileNotFoundError:
+            print(
+                "The File you have opened has been moved or deleted. Please rerun the program and select another one.")
+        if qr.endswith(".txt") and f == 'made by tigerjade003 \n':
+            rr = open(qr, "r")
+            q = rr.readlines()
+            self.PasswordTable.setRowCount(len(q) - 1)
+            self.PasswordTable.show()
+            self.label1.hide()
+            self.label.setText("Passwords")
+            self.Button2.hide()
+            self.Button3.hide()
+            self.Button4.show()
+            self.Button4.clicked.connect(self.create)
+            self.actionCreate_A_Password.triggered.connect(self.create)
         else:
-            self.label1.setText("Error. Please Select a .txt File.")
+            self.label1.setText("Error. Please Select a .txt file made by the program. ")
             self.label1.adjustSize()
 
     def no(self):
@@ -139,8 +190,29 @@ class Ui_MainWindow(QWidget):
         fName, _ = QFileDialog.getSaveFileName(self, "Save File", "", "Text Files (*.txt)")
         if fName:
             with open(fName, "w") as f:
-                f.write("")
-        print(fName)
+                f.write("made by tigerjade003 \n")
+        self.s = fName
+        rr = open(fName, "r")
+        q = rr.readlines()
+        self.PasswordTable.setRowCount(len(q) - 1)
+        self.PasswordTable.show()
+        self.label1.hide()
+        self.label.setText("Passwords")
+        self.Button2.hide()
+        self.Button3.hide()
+        self.Button4.show()
+        self.Button4.clicked.connect(self.create)
+        self.actionCreate_A_Password.triggered.connect(self.create)
+
+    def create(self):
+        site, d1 = QInputDialog.getText(self, 'Website ', 'Enter the website URL ')
+        username, d2 = QInputDialog.getText(self, 'Username', 'Enter the Username, leave blank if none')
+        password, d3 = QInputDialog.getText(self, 'Password', 'Enter the Password')
+        if d1 and d2 and d3:
+            self.PasswordTable.setRowCount(self.PasswordTable.rowCount() + 1)
+            with open(self.s, "a") as f:
+                f.write(site + " " + username + " " + password)
+        print("Creating Password")
 
 
 if __name__ == "__main__":
