@@ -1,11 +1,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, QtTest
-from PyQt5.QtWidgets import QFileDialog, QMainWindow, QWidget, QSizePolicy
-from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QFileDialog, QMainWindow, QWidget, QSizePolicy, QLineEdit, QInputDialog
+from PyQt5.QtCore import Qt, QDir
 import tkinter as tk
 import sys
 
 
-class Ui_MainWindow(object):
+class Ui_MainWindow(QWidget):
     def setupUi(self, MainWindow):
         root = tk.Tk()
         sc_wi = root.winfo_screenwidth()
@@ -112,12 +112,13 @@ class Ui_MainWindow(object):
         self.Button2.show()
         self.Button3.show()
         self.Button3.clicked.connect(self.yes)
+        self.Button2.clicked.connect(self.no)
 
     def yes(self):
         self.label1.setText("Please Select the file storing the passwords")
         self.label1.adjustSize()
         QtTest.QTest.qWait(200)
-        fName = QFileDialog.getOpenFileName()
+        fName = QFileDialog.getOpenFileName(self, "Open Text File", "", "All Files(*) ;; Text Files(*.txt)")
         s = fName[0]
         if s.endswith(".txt"):
             i = 0
@@ -134,10 +135,17 @@ class Ui_MainWindow(object):
                 i += 1
             self.label1.setText("Loaded Password Manager. ")
             self.label1.adjustSize()
-
         else:
             self.label1.setText("Error. Please Select a .txt File.")
             self.label1.adjustSize()
+
+    def no(self):
+        self.label1.setText("Create A Text File Storing the Passwords")
+        self.label1.adjustSize()
+        QtTest.QTest.qWait(200)
+        name = QtWidgets.QInputDialog.getText(self, 'Input Text File Name', 'Enter your Text File Name:')[0]
+
+
 
 
 if __name__ == "__main__":
