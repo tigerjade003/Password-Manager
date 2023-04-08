@@ -1,10 +1,19 @@
 from PyQt5 import QtCore, QtGui, QtWidgets, QtTest
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import QFileDialog, QWidget, QSizePolicy, QTableWidget, QInputDialog
+from PyQt5.QtWidgets import QFileDialog, QWidget, QSizePolicy, QTableWidget, QInputDialog, QTableWidgetItem
 from PyQt5.QtCore import Qt
+from qtwidgets import PasswordEdit
 import sys
 
 
+# work on the table showing the results. Done.
+# work on what happens when the new password button is pressed. Done.
+# add a button on the screen allowing the user to create a new password by clicking the button directly. Done
+# add a delete password button TODO
+# add a edit password function TODO
+# work on what happens when help and FAQ's are pressed TODO
+# After results are showing, add a search function for the results based on the site and the username. TODO
+# start working on password security TODO
 class Ui_MainWindow(QWidget):
     s = ""
 
@@ -12,16 +21,17 @@ class Ui_MainWindow(QWidget):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
         MainWindow.setAutoFillBackground(False)
-        #central widget
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        #Password Table
         self.PasswordTable = QTableWidget(self.centralwidget)
         self.PasswordTable.setObjectName(u"tableWidget")
-        self.PasswordTable.setGeometry(QtCore.QRect(100, 125, 3050, 1450))
+        self.PasswordTable.setGeometry(QtCore.QRect(100, 125, 3000, 1450))
         self.PasswordTable.setColumnCount(3)
-        self.PasswordTable.alternatingRowColors()
-
+        self.PasswordTable.setColumnWidth(0, 585)
+        self.PasswordTable.setColumnWidth(1, 1200)
+        self.PasswordTable.setColumnWidth(2, 1200)
+        qr = self.PasswordTable.alternatingRowColors()
+        qr = True
         item = QtWidgets.QTableWidgetItem()
         self.PasswordTable.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
@@ -153,6 +163,7 @@ class Ui_MainWindow(QWidget):
         self.Button2.clicked.connect(self.no)
 
     def yes(self):
+        _translate = QtCore.QCoreApplication.translate
         self.label1.setText("Please Select the file storing the passwords")
         self.label1.adjustSize()
         QtTest.QTest.qWait(200)
@@ -169,7 +180,6 @@ class Ui_MainWindow(QWidget):
         if qr.endswith(".txt") and f == 'made by tigerjade003 \n':
             rr = open(qr, "r")
             q = rr.readlines()
-            self.PasswordTable.setRowCount(len(q) - 1)
             self.PasswordTable.show()
             self.label1.hide()
             self.label.setText("Passwords")
@@ -181,10 +191,12 @@ class Ui_MainWindow(QWidget):
             self.Button5.clicked.connect(self.deletePass)
             pr = open(qr, "r")
             pr.readline()
-            for i in range(len(q)-1):
-                self.PasswordTable.setItem(self, i, 0, pr.read())
-                self.PasswordTable.setItem(self, i, 1, pr.read())
-                self.PasswordTable.setItem(self, i, 2, pr.read())
+            for i in range(len(q) - 1):
+                s = pr.readline().strip("\n").split("|||")
+                self.PasswordTable.insertRow(i)
+                self.PasswordTable.setItem(i, 0, QTableWidgetItem(s[0]))
+                self.PasswordTable.setItem(i, 1, QTableWidgetItem(s[1]))
+                self.PasswordTable.setItem(i, 2, QTableWidgetItem(s[2]))
             self.actionCreate_A_Password.triggered.connect(self.createPass)
         else:
             self.label1.setText("Error. Please Select a .txt file made by the program. ")
@@ -194,7 +206,7 @@ class Ui_MainWindow(QWidget):
         self.label1.setText("Create A Text File Storing the Passwords")
         self.label1.adjustSize()
         QtTest.QTest.qWait(200)
-        fName, _ = QFileDialog.getSaveFileName(self, "Save File", "", "Text Files (*.txt)")
+        fName = QFileDialog.getSaveFileName(self, "Save File", "", "Text Files (*.txt)")[0]
         if fName:
             with open(fName, "w") as f:
                 f.write("made by tigerjade003 \n")
@@ -209,24 +221,44 @@ class Ui_MainWindow(QWidget):
         self.Button3.hide()
         self.Button4.show()
         self.Button5.show()
-        self.Button4.clicked.connect(self.create)
-        self.button5.clicked.connect(self.deletePass())
+        self.Button4.clicked.connect(self.createPass)
+        self.Button5.clicked.connect(self.deletePass)
+        pr = open(fName, "r")
+        pr.readline()
+        for i in range(len(q) - 1):
+            s = pr.readline().strip("\n").split("|||")
+            self.PasswordTable.insertRow(i)
+            self.PasswordTable.setItem(i, 0, QTableWidgetItem(s[0]))
+            self.PasswordTable.setItem(i, 1, QTableWidgetItem(s[1]))
+            self.PasswordTable.setItem(i, 2, QTableWidgetItem(s[2]))
         self.actionCreate_A_Password.triggered.connect(self.createPass)
 
     def createPass(self):
-        site, d1 = QInputDialog.getText(self, 'Website ', 'Enter the website URL ')
-        username, d2 = QInputDialog.getText(self, 'Username', 'Enter the Username, leave blank if none')
-        password, d3 = QInputDialog.getText(self, 'Password', 'Enter the Password')
-        if d1 and d2 and d3:
-            with open(self.s, "a") as f:
-                f.write(site + " " + username + " " + password)
-                self.updatetable()
+        site = QInputDialog.getText(self, 'Website ', 'Enter the website URL ')[0]
+        username = QInputDialog.getText(self, 'Username', 'Enter the Username, leave blank if none')[0]
+        password = QInputDialog.getText(self, 'Password', 'Enter the Password')[0]
+        with open(self.s, "a") as f:
+            if site != "" and username != "" and password != "":
+                f.write(site + "|||" + username + "|||" + password)
+                f.write("\n")
+        self.updatetable()
 
     def updatetable(self):
-        print("Updating Table")
+        rrr = ""
+        with open(self.s, "r") as qq:
+            rrr = qq.readlines()
+        rr = open(self.s, "r")
+        rr.readline()
+        self.PasswordTable.setRowCount(len(rrr) - 1)
+        for i in range(len(rrr) - 1):
+            s = rr.readline().strip("\n").split("|||")
+            self.PasswordTable.setItem(i, 0, QTableWidgetItem(s[0]))
+            self.PasswordTable.setItem(i, 1, QTableWidgetItem(s[1]))
+            self.PasswordTable.setItem(i, 2, QTableWidgetItem(s[2]))
 
     def deletePass(self):
         print("Deleting Password")
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
