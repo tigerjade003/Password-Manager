@@ -6,6 +6,9 @@ import os
 import sys
 
 
+# work on what happens when help and FAQ's are pressed TODO
+# After results are showing, add a search function for the results based on the site and the username. TODO
+# start working on password security TODO
 class Ui_MainWindow(QWidget):
     s = ""
 
@@ -106,7 +109,7 @@ class Ui_MainWindow(QWidget):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.actionFAQ_s.triggered.connect(lambda: self.clicked("You clicked Frequently Asked Questions"))
-        self.actionfurther_help.triggered.connect(lambda: self.clicked("You clicked to ask for more help"))
+        self.actionfurther_help.triggered.connect(self.help())
         self.Button1.clicked.connect(self.clicker)
 
     def retranslateUi(self, MainWindow):
@@ -313,6 +316,14 @@ class Ui_MainWindow(QWidget):
             self.PasswordTable.setItem(i, 2, QTableWidgetItem(s[2]))
             self.PasswordTable.setItem(i, 3, QTableWidgetItem(s[3]))
             self.PasswordTable.setItem(i, 4, QTableWidgetItem(s[4]))
+
+    def help(self):
+        self.PasswordTable.hide()
+        self.Button6.hide()
+        self.Button5.hide()
+        self.Button4.hide()
+        self.label.setText("Bugs? Fill out this form: ")
+
 
 
 if __name__ == "__main__":
