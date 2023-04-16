@@ -51,27 +51,35 @@ class Ui_MainWindow(QWidget):
         self.Button6 = QtWidgets.QPushButton(self.centralwidget)
         self.Button5.setGeometry(10, 50, 300, 50)
         self.Button6.setGeometry(310, 50, 300, 50)
+        self.Button7 = QtWidgets.QPushButton(self.centralwidget)
+        self.Button7.setGeometry(QtCore.QRect(1400, 250, 400, 50))
         self.Button4.hide()
         self.Button2.hide()
         self.Button3.hide()
         self.Button5.hide()
         self.Button6.hide()
+        self.Button7.hide()
         self.Button1.setFont(QFont('Times', 15))
         self.Button2.setFont(QFont('Times', 15))
         self.Button3.setFont(QFont('Times', 15))
         self.Button4.setFont(QFont('Times', 15))
         self.Button5.setFont(QFont('Times', 15))
         self.Button6.setFont(QFont('Times', 15))
+        self.Button7.setFont(QFont('Times', 15))
         self.label1 = QtWidgets.QLabel(self.centralwidget)
         self.label1.setGeometry(QtCore.QRect(100, 200, 100, 100))
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(1325, 20, 550, 75))
+        self.label3 = QtWidgets.QLabel(self.centralwidget)
+        self.label3.setGeometry(QtCore.QRect(1000, 120, 550, 75))
+        self.label3.hide()
         font = QtGui.QFont()
         font.setPointSize(26)
         font1 = QtGui.QFont()
         font1.setPointSize(10)
         self.label1.setFont(font1)
         self.label.setWordWrap(False)
+        self.label3.setWordWrap(False)
         self.label1.setObjectName("Label1")
         self.label1.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.label1.setAlignment(Qt.AlignCenter)
@@ -80,6 +88,11 @@ class Ui_MainWindow(QWidget):
         self.label.setObjectName("label")
         self.label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.label.setAlignment(Qt.AlignCenter)
+        self.label3.setFont(font)
+        self.label3.setWordWrap(False)
+        self.label3.setObjectName("label3")
+        self.label3.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.label3.setAlignment(Qt.AlignCenter)
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -138,8 +151,10 @@ class Ui_MainWindow(QWidget):
         self.Button5.setText(_translate("MainWindow", "Delete A Password"))
         self.Button6.setStatusTip(_translate("MainWindow", "Refresh the Table"))
         self.Button6.setText(_translate("MainWindow", "Refresh the Table"))
+        self.Button7.setText(_translate("MainWindow", "Done? Click ME!"))
         self.label1.setText(_translate("MainWindow", " "))
         self.label.setText(_translate("MainWindow", "Password Manager"))
+        self.label3.setText(_translate("MainWindow", " "))
         self.menuPassword_Creator.setTitle(_translate("MainWindow", "Password"))
         self.menuHelp.setStatusTip(_translate("MainWindow", "Help"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
@@ -154,11 +169,6 @@ class Ui_MainWindow(QWidget):
         self.actionfurther_help.setText(_translate("MainWindow", "Help"))
         self.actionfurther_help.setStatusTip(_translate("MainWindow", "Find help"))
         self.actionfurther_help.setShortcut(_translate("MainWindow", "Ctrl+H"))
-
-    # going to be deleted in the future
-    def clicked(self, text):
-        self.label.setText(text)
-        self.label.adjustSize()
 
     def clicker(self):
         _translate = QtCore.QCoreApplication.translate
@@ -261,7 +271,7 @@ class Ui_MainWindow(QWidget):
             site = QInputDialog.getText(self, 'Website', 'Enter the website URL ')[0]
             if site != "":
                 username = QInputDialog.getText(self, 'Username', 'Enter the Username, leave blank if none')[0]
-                if username != "" :
+                if username != "":
                     password = QInputDialog.getText(self, 'Password', 'Enter the Password')[0]
                     if password != "":
                         Description = QInputDialog.getText(self, 'Description', 'Enter the Description for the Entry')[0]
@@ -309,6 +319,9 @@ class Ui_MainWindow(QWidget):
         self.Button5.show()
         self.Button4.show()
         self.Button1.hide()
+        self.Button7.hide()
+        self.label3.hide()
+        self.label.setText("Passwords")
         with open(self.s, "r") as qq:
             rrr = qq.readlines()
         rr = open(self.s, "r")
@@ -327,14 +340,20 @@ class Ui_MainWindow(QWidget):
         self.Button6.hide()
         self.Button5.hide()
         self.Button4.hide()
-        self.Button1.show()
+        self.Button1.hide()
         self.Button2.hide()
         self.Button3.hide()
+        self.Button7.show()
         self.Button1.setText("Done? Click ME")
         self.label.setText("Bugs? Fill out this form: https://forms.gle/56Ji4WjngUNE3tTS9")
+        self.label3.setText("Need Help? Fill out this form: https://forms.gle/SiKxrCUGnXr4qLuEA")
+        self.label3.adjustSize()
+        self.label3.show()
         self.label.adjustSize()
         if self.s != "":
-            self.Button1.clicked.connect(self.refresh)
+            self.Button7.clicked.connect(self.refresh)
+        else:
+            self.Button7.clicked.connect(self.clicker)
 
 
 if __name__ == "__main__":
