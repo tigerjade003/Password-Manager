@@ -109,7 +109,7 @@ class Ui_MainWindow(QWidget):
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.actionFAQ_s.triggered.connect(lambda: self.clicked("You clicked Frequently Asked Questions"))
-        self.actionfurther_help.triggered.connect(self.help())
+        self.actionfurther_help.triggered.connect(self.help)
         self.Button1.clicked.connect(self.clicker)
 
     def retranslateUi(self, MainWindow):
@@ -304,6 +304,11 @@ class Ui_MainWindow(QWidget):
 
     def refresh(self):
         rrr = ""
+        self.PasswordTable.show()
+        self.Button6.show()
+        self.Button5.show()
+        self.Button4.show()
+        self.Button1.hide()
         with open(self.s, "r") as qq:
             rrr = qq.readlines()
         rr = open(self.s, "r")
@@ -322,8 +327,14 @@ class Ui_MainWindow(QWidget):
         self.Button6.hide()
         self.Button5.hide()
         self.Button4.hide()
-        self.label.setText("Bugs? Fill out this form: ")
-
+        self.Button1.show()
+        self.Button2.hide()
+        self.Button3.hide()
+        self.Button1.setText("Done? Click ME")
+        self.label.setText("Bugs? Fill out this form: https://forms.gle/56Ji4WjngUNE3tTS9")
+        self.label.adjustSize()
+        if self.s != "":
+            self.Button1.clicked.connect(self.refresh)
 
 
 if __name__ == "__main__":
