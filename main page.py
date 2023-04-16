@@ -215,12 +215,13 @@ class Ui_MainWindow(QWidget):
             pr.readline()
             for i in range(len(q) - 1):
                 s = pr.readline().strip("\n").split("|||")
-                self.PasswordTable.insertRow(i)
-                self.PasswordTable.setItem(i, 0, QTableWidgetItem(s[0]))
-                self.PasswordTable.setItem(i, 1, QTableWidgetItem(s[1]))
-                self.PasswordTable.setItem(i, 2, QTableWidgetItem(s[2]))
-                self.PasswordTable.setItem(i, 3, QTableWidgetItem(s[3]))
-                self.PasswordTable.setItem(i, 4, QTableWidgetItem(s[4]))
+                if s != ['']:
+                    self.PasswordTable.insertRow(i)
+                    self.PasswordTable.setItem(i, 0, QTableWidgetItem(s[0]))
+                    self.PasswordTable.setItem(i, 1, QTableWidgetItem(s[1]))
+                    self.PasswordTable.setItem(i, 2, QTableWidgetItem(s[2]))
+                    self.PasswordTable.setItem(i, 3, QTableWidgetItem(s[3]))
+                    self.PasswordTable.setItem(i, 4, QTableWidgetItem(s[4]))
             self.actionCreate_A_Password.triggered.connect(self.createPass)
         else:
             self.label1.setText("Error. Please Select a .txt file made by the program. ")
