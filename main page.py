@@ -6,9 +6,6 @@ import os
 import sys
 
 
-# work on what happens when help and FAQ's are pressed TODO
-# After results are showing, add a search function for the results based on the site and the username. TODO
-# start working on password security TODO
 class Ui_MainWindow(QWidget):
     s = ""
 
@@ -121,13 +118,13 @@ class Ui_MainWindow(QWidget):
         self.menubar.addAction(self.menuHelp.menuAction())
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-        self.actionFAQ_s.triggered.connect(lambda: self.clicked("You clicked Frequently Asked Questions"))
+        self.actionFAQ_s.triggered.connect(self.FAQ)
         self.actionfurther_help.triggered.connect(self.help)
         self.Button1.clicked.connect(self.clicker)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Password Manager"))
         self.Button1.setStatusTip(_translate("MainWindow", "Start Using the Password Manager"))
         item = self.PasswordTable.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Name"))
@@ -171,6 +168,7 @@ class Ui_MainWindow(QWidget):
         self.actionfurther_help.setShortcut(_translate("MainWindow", "Ctrl+H"))
 
     def clicker(self):
+        self.Button7.hide()
         _translate = QtCore.QCoreApplication.translate
         self.Button1.hide()
         self.menubar.show()
@@ -345,11 +343,26 @@ class Ui_MainWindow(QWidget):
         self.Button2.hide()
         self.Button3.hide()
         self.Button7.show()
-        self.Button1.setText("Done? Click ME")
         self.label.setText("Bugs? Fill out this form: https://forms.gle/56Ji4WjngUNE3tTS9")
         self.label3.setText("Need Help? Fill out this form: https://forms.gle/SiKxrCUGnXr4qLuEA")
         self.label3.adjustSize()
         self.label3.show()
+        self.label.adjustSize()
+        if self.s != "":
+            self.Button7.clicked.connect(self.refresh)
+        else:
+            self.Button7.clicked.connect(self.clicker)
+
+    def FAQ(self):
+        self.PasswordTable.hide()
+        self.Button6.hide()
+        self.Button5.hide()
+        self.Button4.hide()
+        self.Button1.hide()
+        self.Button2.hide()
+        self.Button3.hide()
+        self.Button7.show()
+        self.label.setText("Read the FAQ's here: https://tinyurl.com/PasswordFAQs")
         self.label.adjustSize()
         if self.s != "":
             self.Button7.clicked.connect(self.refresh)
