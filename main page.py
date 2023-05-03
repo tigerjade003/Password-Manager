@@ -276,8 +276,13 @@ class Ui_MainWindow(QWidget):
                     password = QInputDialog.getText(self, 'Password', 'Enter the Password')[0]
                     if password != "":
                         Description = QInputDialog.getText(self, 'Description', 'Enter the Description for the Entry')[0]
+        name = name.strip(" ")
+        site = site.strip(" ")
+        username = username.strip(" ")
+        password = password.strip(" ")
+        Description = Description.strip(" ")
         with open(self.s, "a") as f:
-            if site != "" and username != "" and password != "":
+            if site != "" and username != "" and password != "" and name != "" and Description != "":
                 f.write(name + "|||" + site + "|||" + username + "|||" + password + "|||" + Description)
                 f.write("\n")
         self.updatetable()
@@ -288,7 +293,6 @@ class Ui_MainWindow(QWidget):
             rrr = qq.readlines()
         rr = open(self.s, "r")
         rr.readline()
-
         self.PasswordTable.setRowCount(len(rrr) - 1)
         for i in range(len(rrr) - 1):
             s = rr.readline().strip("\n").split("|||")
@@ -298,8 +302,10 @@ class Ui_MainWindow(QWidget):
             self.PasswordTable.setItem(i, 3, QTableWidgetItem(s[3]))
             self.PasswordTable.setItem(i, 4, QTableWidgetItem(s[4]))
 
-    def deletePass(self):
+    def deletePass(self): 
         name = QInputDialog.getText(self, 'Delete', 'Enter the Name of the Entry You Want to Delete')[0]
+        name.strip(" ")
+        name.strip("\n")
         if name != "":
             with open(self.s, "r") as a:
                 with open("123456789012345678901234567890.txt", "w") as b:
