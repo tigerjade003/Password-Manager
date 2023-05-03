@@ -6,11 +6,9 @@ import os
 import sys
 
 
-# work on what happens when help and FAQ's are pressed TODO
-# After results are showing, add a search function for the results based on the site and the username. TODO
-# start working on password security TODO
 class Ui_MainWindow(QWidget):
     s = ""
+    done = False
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -180,6 +178,7 @@ class Ui_MainWindow(QWidget):
         self.label.adjustSize()
         self.ButtonNO.show()
         self.ButtonYES.show()
+        self.actionCreate_A_Password.triggered.connect(self.before)
         self.ButtonYES.clicked.connect(self.yes)
         self.ButtonNO.clicked.connect(self.no)
 
@@ -371,6 +370,10 @@ class Ui_MainWindow(QWidget):
             self.ButtonDone.clicked.connect(self.refresh)
         else:
             self.ButtonDone.clicked.connect(self.clicker)
+
+    def before(self):
+        self.label1.setText("You have not chosen or created a password file yet. Please create or choose one first.")
+        self.label1.adjustSize()
 
 
 if __name__ == "__main__":
